@@ -1,0 +1,6 @@
+framework module Pods_RxSwiftWeatherAPISample_RxSwiftWeatherAPISampleUITests {
+  umbrella header "Pods-RxSwiftWeatherAPISample-RxSwiftWeatherAPISampleUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
