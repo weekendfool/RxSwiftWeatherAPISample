@@ -35,9 +35,12 @@ class RxSwiftWeatherAPIViewModel: RxSwiftWeatherAPIViewModelInput, RxSwiftWeathe
     var output: RxSwiftWeatherAPIViewModelOutput { return self }
     
     private let disposeBag = DisposeBag()
-    private let weatherData = PublishRelay<String>()
-    private var cityName = BehaviorRelay<String>(value: "")
-    var name = "東京"
+//    private let city = BehaviorRelay<String>(value: "")
+    // 返却されたデータ
+    private var returnCityName = BehaviorRelay<String>(value: "")
+    private var returnWeather = BehaviorRelay<String>(value: "")
+    private var returnTemperture = BehaviorRelay<String>(value: "")
+    var name = ""
     
     // Input
     var textFieldCityName = PublishRelay<String>()
@@ -54,17 +57,17 @@ class RxSwiftWeatherAPIViewModel: RxSwiftWeatherAPIViewModelInput, RxSwiftWeathe
         
         // output
         
-        weather = weatherData.map { weather in
+        weather = returnWeather.map { weather in
             String(weather)
         }
         .asSignal(onErrorSignalWith: .empty())
         
-        place = weatherData.map { weather in
+        place = returnCityName.map { weather in
             String(weather)
         }
         .asSignal(onErrorSignalWith: .empty())
         
-        temperture = weatherData.map { weather in
+        temperture = returnTemperture.map { weather in
             String(weather)
         }
         .asSignal(onErrorSignalWith: .empty())
@@ -72,16 +75,31 @@ class RxSwiftWeatherAPIViewModel: RxSwiftWeatherAPIViewModelInput, RxSwiftWeathe
 
         // input
         // tapされた時の動作
-        isTappedButton.map { [weak self] _ in
+        isTappedButton.map { [weak self] in
             // api通信を起動
-//            guard let self = self else { return }
-//            guard let city = self?.cityName else { return }
-            print("ok")
-//            let city = String(self?.cityName)
-            self?.model.fetchWeather(cityName: self!.name)
-            return "sun"
+            self?.model.fetchWeather(cityName: self?.name ?? "")
+            
+            return self?.model.city ?? ""
         }
-        .bind(to: weatherData)
+        .bind(to: returnCityName)
+        .disposed(by: disposeBag)
+        
+        isTappedButton.map { [weak self] in
+            // api通信を起動
+            self?.model.fetchWeather(cityName: self?.name ?? "")
+            
+            return self?.model.weather ?? ""
+        }
+        .bind(to: returnWeather)
+        .disposed(by: disposeBag)
+        
+        isTappedButton.map { [weak self] in
+            // api通信を起動
+            self?.model.fetchWeather(cityName: self?.name ?? "")
+            
+            return self?.model.temperature ?? ""
+        }
+        .bind(to: returnTemperture)
         .disposed(by: disposeBag)
  
         textFieldCityName.map{ [weak self] text in

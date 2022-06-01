@@ -13,8 +13,15 @@ class WeatherModel {
     // アクセスするためのURL
     let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=26879492e3ebde403fb18588142381cc&units=metric"
     
+    // 各データ
+    var city: String?
+    var temperature: String?
+    var weather: String?
+    
+    
+    
     // どこの都市にするか
-    func fetchWeather(cityName: String) {
+    func fetchWeather(cityName: String)  {
         // 取得したい都市の天気にアクセスするURL
         let urlString = "\(weatherURL)&q=\(cityName)"
         
@@ -38,12 +45,20 @@ class WeatherModel {
                 if let safeData = data {
                     if let weather = self.parseJSON(safeData) {
                         print("weather: \(weather)")
-//                        return
+                        
+                        self.city = weather.cityName
+                        self.temperature = String(weather.temperature)
+                        self.weather = weather.coditionName
+                        
+                        
+                        return
                     }
                 }
             }
             
             task.resume()
+            
+           
         }
     }
     

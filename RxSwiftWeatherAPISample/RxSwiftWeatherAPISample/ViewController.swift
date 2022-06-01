@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         
         bind()
         
-        weatherModel.fetchWeather(cityName: "tokyo")
+//        weatherModel.fetchWeather(cityName: "tokyo")
     }
 
     // MARK: - 関数
