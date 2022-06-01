@@ -8,7 +8,7 @@
 import Foundation
 import CoreImage
 
-struct Data: Codable {
+struct DataModel: Codable {
     let name: String
     let main: Main
     let weather: [Weather]

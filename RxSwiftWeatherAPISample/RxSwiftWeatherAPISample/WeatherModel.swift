@@ -20,6 +20,8 @@ class WeatherModel {
         
         // アクセス
         performRecquest(with: urlString)
+        
+//        return
     }
     
     func performRecquest(with urlString: String) {
@@ -34,12 +36,31 @@ class WeatherModel {
                 }
                 
                 if let safeData = data {
-                    if let weather = self.paresJSON(safeData)
+                    if let weather = self.parseJSON(safeData) {
+                        print("weather: \(weather)")
+//                        return
+                    }
                 }
             }
+            
+            task.resume()
         }
     }
     
-    func parseJSON(_ weatherData: Data) -> WeatherModel?
+    func parseJSON(_ weatherData: Data) -> WeatherDataModel? {
+        let decoder = JSONDecoder()
+        
+        do {
+            let decodedData = try decoder.decode(DataModel.self, from: weatherData)
+            let id = decodedData.weather[0].id
+            let temp = decodedData.main.temp
+            let name = decodedData.name
+            
+            let weather = WeatherDataModel(conditionID: id, cityName: name, temperature: temp)
+            return weather
+        } catch {
+            return nil
+        }
+    }
     
 }
