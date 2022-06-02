@@ -62,13 +62,13 @@ class RxSwiftWeatherAPIViewModel: RxSwiftWeatherAPIViewModelInput, RxSwiftWeathe
         }
         .asSignal(onErrorSignalWith: .empty())
         
-        place = returnCityName.map { weather in
-            String(weather)
+        place = returnCityName.map { city in
+            String(city)
         }
         .asSignal(onErrorSignalWith: .empty())
         
-        temperture = returnTemperture.map { weather in
-            String(weather)
+        temperture = returnTemperture.map { temperture in
+            String(temperture)
         }
         .asSignal(onErrorSignalWith: .empty())
         
@@ -106,6 +106,8 @@ class RxSwiftWeatherAPIViewModel: RxSwiftWeatherAPIViewModelInput, RxSwiftWeathe
             self?.name = text
         }
        
+        
+        
         
         
        
