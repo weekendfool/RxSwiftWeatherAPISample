@@ -94,11 +94,11 @@ extension ViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let city = searchTextField.text {
-            weatherModel.fetchWeather(cityName: city)
-        }
-        
-        searchTextField.text = ""
+//        if let city = searchTextField.text {
+//            weatherModel.fetchWeather(cityName: city)
+//        }
+//
+//        searchTextField.text = ""
     }
 }
 

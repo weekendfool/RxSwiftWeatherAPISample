@@ -18,10 +18,116 @@ class WeatherModel {
     var temperature: String?
     var weather: String?
     
+    func fetchWeatherCity(cityName: String) -> String {
+        // 取得したい都市の天気にアクセスするURL
+        let urlString = "\(weatherURL)&q=\(cityName)"
+        
+        var cityName: String?
+        
+        // アクセス
+        if let url = URL(string: urlString) {
+            
+            let session = URLSession(configuration: .default)
+            
+            let task = session.dataTask(with: url) { data, response, error in
+                if error != nil {
+                    return
+                }
+                
+                if let safeData = data {
+                    if let weather = self.parseJSON(safeData) {
+                        print("weather: \(weather)")
+                        
+                        self.city = weather.cityName
+                        self.temperature = String(weather.temperature)
+                        self.weather = weather.coditionName
+                        
+                        cityName = weather.cityName
+                        return
+                    }
+                }
+            }
+            
+            task.resume()
+        }
+        
+        return cityName ?? "#"
+    }
     
-    
+    func fetchWeatherTemperature(cityName: String) -> String {
+        // 取得したい都市の天気にアクセスするURL
+        let urlString = "\(weatherURL)&q=\(cityName)"
+        
+        var temperature: String?
+        
+        // アクセス
+        if let url = URL(string: urlString) {
+            
+            let session = URLSession(configuration: .default)
+            
+            let task = session.dataTask(with: url) { data, response, error in
+                if error != nil {
+                    return
+                }
+                
+                if let safeData = data {
+                    if let weather = self.parseJSON(safeData) {
+                        print("weather: \(weather)")
+                        
+                        self.city = weather.cityName
+                        self.temperature = String(weather.temperature)
+                        self.weather = weather.coditionName
+                        
+                        temperature = String(weather.temperature)
+                        return
+                    }
+                }
+            }
+            
+            task.resume()
+        }
+        
+        return temperature ?? "##"
+    }
+ 
+    func fetchWeather(cityName: String) -> String {
+        // 取得したい都市の天気にアクセスするURL
+        let urlString = "\(weatherURL)&q=\(cityName)"
+        
+        var retrunWeather: String?
+        
+        // アクセス
+        if let url = URL(string: urlString) {
+            
+            let session = URLSession(configuration: .default)
+            
+            let task = session.dataTask(with: url) { data, response, error in
+                if error != nil {
+                    return
+                }
+                
+                if let safeData = data {
+                    if let weather = self.parseJSON(safeData) {
+                        print("weather: \(weather)")
+                        
+                        self.city = weather.cityName
+                        self.temperature = String(weather.temperature)
+                        self.weather = weather.coditionName
+                        
+                        retrunWeather =  weather.coditionName
+                        return
+                    }
+                }
+            }
+            
+            task.resume()
+        }
+        
+        return retrunWeather ?? "###"
+    }
+
     // どこの都市にするか
-    func fetchWeather(cityName: String)  {
+    func fetchWeather2(cityName: String)  {
         // 取得したい都市の天気にアクセスするURL
         let urlString = "\(weatherURL)&q=\(cityName)"
         
@@ -57,7 +163,38 @@ class WeatherModel {
             }
             
             task.resume()
+                    
+        }
+    }
+    
+    func performRecquest2(with urlString: String, completion: ()-> ()) {
+        
+        if let url = URL(string: urlString) {
             
+            let session = URLSession(configuration: .default)
+            
+            let task = session.dataTask(with: url) { data, response, error in
+                if error != nil {
+                    return
+                }
+                
+                if let safeData = data {
+                    if let weather = self.parseJSON(safeData) {
+                        print("weather: \(weather)")
+                        
+                        self.city = weather.cityName
+                        self.temperature = String(weather.temperature)
+                        self.weather = weather.coditionName
+                        
+                        
+                        return
+                    }
+                }
+            }
+            
+            task.resume()
+            
+            completion()
            
         }
     }

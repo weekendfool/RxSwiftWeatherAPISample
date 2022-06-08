@@ -40,7 +40,11 @@ class RxSwiftWeatherAPIViewModel: RxSwiftWeatherAPIViewModelInput, RxSwiftWeathe
     private var returnCityName = BehaviorRelay<String>(value: "")
     private var returnWeather = BehaviorRelay<String>(value: "")
     private var returnTemperture = BehaviorRelay<String>(value: "")
-    var name = ""
+    var name = BehaviorRelay<String>(value: "") {
+        didSet {
+            print("name: \(name)")
+        }
+    }
     
     // Input
     var textFieldCityName = PublishRelay<String>()
@@ -75,36 +79,49 @@ class RxSwiftWeatherAPIViewModel: RxSwiftWeatherAPIViewModelInput, RxSwiftWeathe
 
         // input
         // tapされた時の動作
-        isTappedButton.map { [weak self] in
-            // api通信を起動
-            self?.model.fetchWeather(cityName: self?.name ?? "")
-            
-            return self?.model.city ?? ""
-        }
-        .bind(to: returnCityName)
-        .disposed(by: disposeBag)
+        Observable.zip(isTappedButton, name)
+            .map { [weak self] (_, text) in
+                print("name2: \(self?.name)")
+                print("text1: \(text)")
+                return text
+            }
+            .bind(to: name)
+            .disposed(by: disposeBag)
         
-        isTappedButton.map { [weak self] in
-            // api通信を起動
-            self?.model.fetchWeather(cityName: self?.name ?? "")
-            
-            return self?.model.weather ?? ""
-        }
-        .bind(to: returnWeather)
-        .disposed(by: disposeBag)
-        
-        isTappedButton.map { [weak self] in
-            // api通信を起動
-            self?.model.fetchWeather(cityName: self?.name ?? "")
-            
-            return self?.model.temperature ?? ""
-        }
-        .bind(to: returnTemperture)
-        .disposed(by: disposeBag)
- 
+//        isTappedButton.map { [weak self] in
+//            // api通信を起動
+//            self?.model.fetchWeather(cityName: self?.name ?? "")
+//
+//            return self?.model.city ?? ""
+//        }
+//        .bind(to: returnCityName)
+//        .disposed(by: disposeBag)
+//
+//        isTappedButton.map { [weak self] in
+//            // api通信を起動
+//            self?.model.fetchWeather(cityName: self?.name ?? "")
+//
+//            return self?.model.weather ?? ""
+//        }
+//        .bind(to: returnWeather)
+//        .disposed(by: disposeBag)
+//
+//        isTappedButton.map { [weak self] in
+//            // api通信を起動
+//            self?.model.fetchWeather(cityName: self?.name ?? "")
+//
+//            return self?.model.temperature ?? ""
+//        }
+//        .bind(to: returnTemperture)
+//        .disposed(by: disposeBag)
+//
         textFieldCityName.map{ [weak self] text in
-            self?.name = text
+            print("text: \(text)")
+            return text
+//            self?.name = String(text)
         }
+        .bind(to: name)
+        .disposed(by: disposeBag)
        
         
         
