@@ -50,7 +50,7 @@ class WeatherModel {
             
             task.resume()
         }
-        
+        print("cityName: \(cityName)")
         return cityName ?? "#"
     }
     
@@ -86,7 +86,7 @@ class WeatherModel {
             
             task.resume()
         }
-        
+        print("temperature: \(temperature)")
         return temperature ?? "##"
     }
  
@@ -123,6 +123,7 @@ class WeatherModel {
             task.resume()
         }
         
+        print("retrunWeather: \(retrunWeather)")
         return retrunWeather ?? "###"
     }
 

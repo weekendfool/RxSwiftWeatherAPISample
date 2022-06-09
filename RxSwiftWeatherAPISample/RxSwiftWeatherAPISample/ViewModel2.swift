@@ -47,21 +47,24 @@ class ViewModel2: ViewModel2Type, ViewModel2Input, ViewModel2Output {
         self.textFieldCityName = text
         self.isTappedButton = tap
         
-        let x = textFieldCityName.map { text -> String in
-            
-            return model.fetchWeather(cityName: text)
-        }.asDriver()
+//        let x = textFieldCityName.map { text -> String in
+//
+//            return model.fetchWeather(cityName: text)
+//        }.asDriver()
         
         weather = textFieldCityName.map { text -> String in
-            return model.fetchWeather(cityName: text)
+            model.fetchWeather(cityName: text)
+            return model.weather ?? "$"
         }.asDriver()
         
         place = textFieldCityName.map { text -> String in
-            return model.fetchWeatherCity(cityName: text)
+            model.fetchWeatherCity(cityName: text)
+            return model.city ?? "$$"
         }.asDriver()
         
         temperture = textFieldCityName.map { text -> String in
-            return model.fetchWeatherTemperature(cityName: text)
+            model.fetchWeatherTemperature(cityName: text)
+            return model.temperature ?? "$$$"
         }.asDriver()
         
 //        tap = isTappedButton.map { _ in
