@@ -19,6 +19,8 @@ protocol ViewModel2Output {
     var weather: Driver<String> { get }
     var place: Driver<String> { get }
     var temperture: Driver<String> { get }
+    
+//    var tapped: Signal<Void> { get }
 }
 
 protocol ViewModel2Type {
@@ -39,26 +41,32 @@ class ViewModel2: ViewModel2Type, ViewModel2Input, ViewModel2Output {
     var place: Driver<String>
     var temperture: Driver<String>
     
+//    var tapped: Signal<Void>
+    
     init(text: Driver<String>, tap: Signal<Void>, model: WeatherModel) {
         self.textFieldCityName = text
         self.isTappedButton = tap
         
         let x = textFieldCityName.map { text -> String in
-            return String(text)
-        }
+            
+            return model.fetchWeather(cityName: text)
+        }.asDriver()
         
-//        weather = isTappedButton.withLatestFrom(x)
-//            .flatMapLatest { text in
-//                return model.fetchWeather(cityName: text)
-//            }
-//
-        weather = isTappedButton.map{ _ in
-            return model.fetchWeather(cityName: String(x))
-        }.asDriver(onErrorDriveWith: .empty())
+        weather = textFieldCityName.map { text -> String in
+            return model.fetchWeather(cityName: text)
+        }.asDriver()
         
-        place =
+        place = textFieldCityName.map { text -> String in
+            return model.fetchWeatherCity(cityName: text)
+        }.asDriver()
         
-        temperture =
+        temperture = textFieldCityName.map { text -> String in
+            return model.fetchWeatherTemperature(cityName: text)
+        }.asDriver()
+        
+//        tap = isTappedButton.map { _ in
+//            <#code#>
+//        }
     }
     
     

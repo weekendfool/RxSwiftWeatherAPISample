@@ -33,7 +33,9 @@ class ViewController: UIViewController {
         
         searchTextField.delegate = self
         
-        bind()
+//        bind()
+        
+        bind2()
         
 //        weatherModel.fetchWeather(cityName: "tokyo")
     }
@@ -72,6 +74,38 @@ class ViewController: UIViewController {
         rxSwiftWeatherAPIViewModel.output.temperture
             .asObservable()
             .bind(to: tempertureLabel.rx.text)
+            .disposed(by: disposeBag)
+    }
+    
+    func bind2() {
+        // input
+        let viewModel2 = ViewModel2(
+            text: searchTextField.rx.text.orEmpty.asDriver(),
+            tap: goButton.rx.tap.asSignal(),
+            model: weatherModel
+        )
+        
+        // output
+        
+        viewModel2.output.weather
+            .map { weather in
+                String(weather)
+            }
+            .drive(weatherLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel2.output.place
+            .map { place in
+                String(place)
+            }
+            .drive(placeLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel2.output.temperture
+            .map { temperture in
+                String(temperture)
+            }
+            .drive(tempertureLabel.rx.text)
             .disposed(by: disposeBag)
     }
 }
