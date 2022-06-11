@@ -50,9 +50,9 @@ class ViewModel2: ViewModel2Type, ViewModel2Input, ViewModel2Output {
     var tapped: Signal<Void>
     
     // test
-    let testWeather: Driver<String>
-    let testPlace: Driver<String>
-    let textTemperture: Driver<String>
+//    let testWeather: Driver<String>
+//    let testPlace: Driver<String>
+//    let textTemperture: Driver<String>
     
     init(text: Driver<String>, tap: Signal<Void>, model: WeatherModel) {
         self.textFieldCityName = text
@@ -65,38 +65,41 @@ class ViewModel2: ViewModel2Type, ViewModel2Input, ViewModel2Output {
         
        
         
-        
-        testWeather = textFieldCityName.map { text -> String in
-            model.fetchWeather(cityName: text)
-            return model.weather ?? "$"
-        }.asDriver()
-        
-        testPlace = textFieldCityName.map { text -> String in
-            model.fetchWeatherCity(cityName: text)
-            return model.city ?? "$$"
-        }.asDriver()
-        
-        textTemperture = textFieldCityName.map { text -> String in
-            model.fetchWeatherTemperature(cityName: text)
-            return model.temperature ?? "$$$"
-        }.asDriver()
+//
+//        testWeather = textFieldCityName.map { text -> String in
+//            model.fetchWeather(cityName: text)
+//            return model.weather ?? "$"
+//        }.asDriver()
+//
+//        testPlace = textFieldCityName.map { text -> String in
+//            model.fetchWeatherCity(cityName: text)
+//            return model.city ?? "$$"
+//        }.asDriver()
+//
+//        textTemperture = textFieldCityName.map { text -> String in
+//            model.fetchWeatherTemperature(cityName: text)
+//            return model.temperature ?? "$$$"
+//        }.asDriver()
         
         
 //
         weather = textFieldCityName.map { text -> String in
             model.fetchWeather(cityName: text)
             return model.weather ?? "$"
-        }.asDriver()
+        }.debug("weather: \(model.weather)")
+        .asDriver()
         
         place = textFieldCityName.map { text -> String in
             model.fetchWeatherCity(cityName: text)
             return model.city ?? "$$"
-        }.asDriver()
+        }.debug("weather: \(model.city)")
+        .asDriver()
         
         temperture = textFieldCityName.map { text -> String in
             model.fetchWeatherTemperature(cityName: text)
             return model.temperature ?? "$$$"
-        }.asDriver()
+        }.debug("weather: \(model.temperature)")
+        .asDriver()
         
         tapped = isTappedButton.map { _ in
             print("tap されたぜ✨")
