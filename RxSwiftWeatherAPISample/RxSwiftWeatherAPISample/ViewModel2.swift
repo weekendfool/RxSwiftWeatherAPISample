@@ -20,7 +20,7 @@ protocol ViewModel2Output {
     var place: Driver<String> { get }
     var temperture: Driver<String> { get }
     
-//    var tapped: Signal<Void> { get }
+    var tapped: Signal<Void> { get }
 }
 
 protocol ViewModel2Type {
@@ -36,12 +36,23 @@ class ViewModel2: ViewModel2Type, ViewModel2Input, ViewModel2Output {
     var textFieldCityName: Driver<String>
     var isTappedButton: Signal<Void>
     
+//    var text = PublishSubject<String>(value: "")
+    
+//    private var x: PublishRelay<String>
+//    private var y: PublishRelay<String>
+//    private var z: PublishRelay<String>
+    
     // output
     var weather: Driver<String>
     var place: Driver<String>
     var temperture: Driver<String>
     
-//    var tapped: Signal<Void>
+    var tapped: Signal<Void>
+    
+    // test
+    let testWeather: Driver<String>
+    let testPlace: Driver<String>
+    let textTemperture: Driver<String>
     
     init(text: Driver<String>, tap: Signal<Void>, model: WeatherModel) {
         self.textFieldCityName = text
@@ -52,6 +63,26 @@ class ViewModel2: ViewModel2Type, ViewModel2Input, ViewModel2Output {
 //            return model.fetchWeather(cityName: text)
 //        }.asDriver()
         
+       
+        
+        
+        testWeather = textFieldCityName.map { text -> String in
+            model.fetchWeather(cityName: text)
+            return model.weather ?? "$"
+        }.asDriver()
+        
+        testPlace = textFieldCityName.map { text -> String in
+            model.fetchWeatherCity(cityName: text)
+            return model.city ?? "$$"
+        }.asDriver()
+        
+        textTemperture = textFieldCityName.map { text -> String in
+            model.fetchWeatherTemperature(cityName: text)
+            return model.temperature ?? "$$$"
+        }.asDriver()
+        
+        
+//
         weather = textFieldCityName.map { text -> String in
             model.fetchWeather(cityName: text)
             return model.weather ?? "$"
@@ -67,9 +98,9 @@ class ViewModel2: ViewModel2Type, ViewModel2Input, ViewModel2Output {
             return model.temperature ?? "$$$"
         }.asDriver()
         
-//        tap = isTappedButton.map { _ in
-//            <#code#>
-//        }
+        tapped = isTappedButton.map { _ in
+            print("tap されたぜ✨")
+        }
     }
     
     

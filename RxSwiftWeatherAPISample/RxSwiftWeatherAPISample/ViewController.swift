@@ -86,27 +86,35 @@ class ViewController: UIViewController {
         )
         
         // output
-        
-        viewModel2.output.weather
-            .map { weather in
-                String(weather)
-            }
+        viewModel2.output.tapped
+            .withLatestFrom(viewModel2.output.weather)
+            .asDriver(onErrorDriveWith: .empty())
             .drive(weatherLabel.rx.text)
             .disposed(by: disposeBag)
+
+//        viewModel2.output.weather
+////            .map { weather in
+////                String(weather)
+////            }
+//            .drive(weatherLabel.rx.text)
+//            .disposed(by: disposeBag)
         
         viewModel2.output.place
-            .map { place in
-                String(place)
-            }
+//            .map { place in
+//                String(place)
+//            }
             .drive(placeLabel.rx.text)
             .disposed(by: disposeBag)
         
         viewModel2.output.temperture
-            .map { temperture in
-                String(temperture)
-            }
+//            .map { temperture in
+//                String(temperture)
+//            }
             .drive(tempertureLabel.rx.text)
             .disposed(by: disposeBag)
+        
+        
+       
     }
 }
 
